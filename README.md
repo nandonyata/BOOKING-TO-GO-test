@@ -7,7 +7,7 @@ go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@lat
 
 ### Setup Alias
 ```shell
-alias air='~/go/bin/air'        
+alias air='~/go/bin/air' // or use "go run main.go"       
 alias migrate='~/go/bin/migrate'
 ```
 
