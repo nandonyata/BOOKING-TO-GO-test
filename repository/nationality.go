@@ -13,7 +13,7 @@ type NationalityRepository struct {
 
 func (r *NationalityRepository) Create(in *entity.Nationality) (interface{}, error) {
 	query := `
-		INSERT INTO "nationality" (nationality_name, nationality_code)
+		INSERT INTO nationality (nationality_name, nationality_code)
 		VALUES ($1, $2)
 	`
 
