@@ -91,6 +91,7 @@ func (r *CustomerRepository) FindAll() (interface{}, error) {
 
 			currentCustId = customer.Id
 			currentCust = model.ResponseFetchCustomer{
+				Id:          customer.Id,
 				Nationality: nationality,
 				Name:        customer.Cst_name,
 				Dob:         customer.Cst_dob,
