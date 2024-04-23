@@ -14,11 +14,6 @@ type NationalityService struct {
 	Database *sql.DB
 }
 
-type Response struct {
-	Data  interface{} `json:"data"`
-	Error string      `json:"error"`
-}
-
 func (s *NationalityService) Create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
