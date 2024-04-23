@@ -2,6 +2,7 @@ package repository
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/nandonyata/BOOKING-TO-GO-test/entity"
 	"github.com/nandonyata/BOOKING-TO-GO-test/model"
@@ -183,6 +184,8 @@ func (r *CustomerRepository) Update(id int, in entity.Customer) (interface{}, er
 		SET	nationality_id = $2, cst_name = $3, cst_dob = $4, cst_phoneNum= $5, cst_email = $6
 		WHERE id = $1
 	`
+
+	fmt.Printf("%+v\n>>>>>", in)
 
 	resp, err := r.Database.Exec(query, id, in.Nationality_id, in.Cst_name, in.Cst_dob, in.Cst_phoneNum, in.Cst_email)
 	if err != nil {
