@@ -42,7 +42,7 @@ func (s *NationalityService) Create(w http.ResponseWriter, r *http.Request) {
 	repo := repository.NationalityRepository{Database: s.Database}
 
 	// Insert data into database
-	result, err := repo.Create(&newNationality)
+	_, err = repo.Create(&newNationality)
 	if err != nil {
 		response.Error = err.Error()
 		w.WriteHeader(http.StatusInternalServerError)
@@ -50,7 +50,9 @@ func (s *NationalityService) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.Data = result
+	response.Data = struct {
+		Message string `json:"message"`
+	}{Message: "Success"}
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
 }
