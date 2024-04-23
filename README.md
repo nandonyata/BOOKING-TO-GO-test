@@ -1,5 +1,10 @@
 # BOOKING-TO-GO-test
 
+### Install Migrate
+```shell
+go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+```
+
 ### Setup Alias
 ```shell
 alias air='~/go/bin/air'        
