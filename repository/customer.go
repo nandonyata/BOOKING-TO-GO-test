@@ -5,24 +5,39 @@ import (
 	"errors"
 
 	"github.com/nandonyata/BOOKING-TO-GO-test/entity"
+	"github.com/nandonyata/BOOKING-TO-GO-test/model"
 )
 
 type CustomerRepository struct {
 	Database *sql.DB
 }
 
-func (r *CustomerRepository) Create(in *entity.Customer) (interface{}, error) {
+func (r *CustomerRepository) Create(in *model.ReqBodyCreateCustomer) (interface{}, error) {
 	query := `
 		INSERT INTO customer (nationality_id, cst_name, cst_dob, cst_phoneNum, cst_email)
 		VALUES ($1, $2, $3, $4, $5)
+		RETURNING id
 	`
 
-	result, err := r.Database.Exec(query, in.Nationality_id, in.Cst_name, in.Cst_dob, in.Cst_phoneNum, in.Cst_email)
+	var custId int
+	err := r.Database.QueryRow(query, in.Nationality_id, in.Name, in.Dob, in.Phone, in.Email).Scan(&custId)
 	if err != nil {
 		return nil, err
 	}
 
-	return result, nil
+	for _, v := range in.Family_list {
+		query = `
+			INSERT INTO family_list (cst_id, fl_relation, fl_name, fl_dob)
+			VALUES ($1, $2, $3, $4)
+		`
+
+		_, err = r.Database.Exec(query, custId, v.Relation, v.Name, v.Dob)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return "Success", nil
 }
 
 func (r *CustomerRepository) FindAll() ([]entity.Customer, error) {
