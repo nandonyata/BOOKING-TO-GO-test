@@ -1,0 +1,268 @@
+{
+	"info": {
+		"_postman_id": "6a1fb19f-0579-4e16-9f9c-7bb1ee1724d6",
+		"name": "BOOKING TO GO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24874313"
+	},
+	"item": [
+		{
+			"name": "NATIONALITY",
+			"item": [
+				{
+					"name": "FIND ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3002/nationality"
+					},
+					"response": [
+						{
+							"name": "FIND ALL",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3002/nationality"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Apr 2024 13:05:50 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "213"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 5,\n            \"nationality_name\": \"ENGLAND\",\n            \"nationality_code\": \"EG\"\n        },\n        {\n            \"id\": 1,\n            \"nationality_name\": \"INDONESIA\",\n            \"nationality_code\": \"ID\"\n        },\n        {\n            \"id\": 3,\n            \"nationality_name\": \"PHILIPINES\",\n            \"nationality_code\": \"PH\"\n        }\n    ],\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "FIND BY CODE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3002/nationality/ID"
+					},
+					"response": [
+						{
+							"name": "FIND ONE",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3002/nationality/ID"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Apr 2024 13:13:36 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "84"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"nationality_name\": \"INDONESIA\",\n        \"nationality_code\": \"ID\"\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nationality_code\": \"ID\",\n    \"nationality_name\": \"INDONESIA\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3002/nationality"
+					},
+					"response": [
+						{
+							"name": "CREATE",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"nationality_code\": \"ID\",\n    \"nationality_name\": \"INDONESIA\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "localhost:3002/nationality"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Apr 2024 13:06:14 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"message\": \"Success\"\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "CUSTOMER",
+			"item": [
+				{
+					"name": "CREATE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nationality_id\": 1,\n    \"name\": \"NANDO\",\n    \"dob\": \"29-06-2001\",\n    \"phone\": \"6289172993057\",\n    \"email\": \"nando@mail.com\",\n    \"family_list\": [\n        {\n            \"name\": \"NYATA\",\n            \"relation\": \"Dad\",\n            \"dob\": \"29-06-2003\"\n        },\n         {\n            \"name\": \"Pasti\",\n            \"relation\": \"Niece\",\n            \"dob\": \"29-06-2007\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3002/customer"
+					},
+					"response": []
+				},
+				{
+					"name": "FIND ALL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3002/customer"
+					},
+					"response": [
+						{
+							"name": "FIND ALL",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3002/customer"
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Apr 2024 15:40:13 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "483"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"nationality\": \"INDONESIA\",\n            \"name\": \"pp\",\n            \"dob\": \"29-06-2001\",\n            \"phone\": \"6289172993057\",\n            \"email\": \"nando@mail.com\",\n            \"family_list\": [\n                {\n                    \"name\": \"aa\",\n                    \"dob\": \"29-06-2003\",\n                    \"relation\": \"Dad\"\n                },\n                {\n                    \"name\": \"ss\",\n                    \"dob\": \"29-06-2007\",\n                    \"relation\": \"Niece\"\n                }\n            ]\n        },\n        {\n            \"nationality\": \"INDONESIA\",\n            \"name\": \"NANDO\",\n            \"dob\": \"29-06-2001\",\n            \"phone\": \"6289172993057\",\n            \"email\": \"nando@mail.com\",\n            \"family_list\": [\n                {\n                    \"name\": \"NYATA\",\n                    \"dob\": \"29-06-2003\",\n                    \"relation\": \"Dad\"\n                },\n                {\n                    \"name\": \"Pasti\",\n                    \"dob\": \"29-06-2007\",\n                    \"relation\": \"Niece\"\n                }\n            ]\n        }\n    ],\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "FIND ONE",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "localhost:3002/customer/3"
+					},
+					"response": [
+						{
+							"name": "FIND ONE",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": "localhost:3002/customer/3"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 23 Apr 2024 15:58:19 GMT"
+								},
+								{
+									"key": "Content-Length",
+									"value": "262"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 3,\n        \"nationality\": \"INDONESIA\",\n        \"name\": \"NANDO\",\n        \"dob\": \"29-06-2001\",\n        \"phone\": \"6289172993057\",\n        \"email\": \"nando@mail.com\",\n        \"family_list\": [\n            {\n                \"name\": \"NYATA\",\n                \"dob\": \"29-06-2003\",\n                \"relation\": \"Dad\"\n            },\n            {\n                \"name\": \"Pasti\",\n                \"dob\": \"29-06-2007\",\n                \"relation\": \"Niece\"\n            }\n        ]\n    },\n    \"error\": \"\"\n}"
+						}
+					]
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nationality_id\": 1,\n    \"cst_name\": \"NANDOssss\",\n    \"cst_dob\": \"29-06-2001\",\n    \"cst_phoneNum\": \"6289172993057\",\n    \"cst_email\": \"nando@mail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:3002/customer/3"
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "localhost:3002/customer/3"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
