@@ -3,7 +3,6 @@ package usecase
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/nandonyata/BOOKING-TO-GO-test/entity"
@@ -15,43 +14,43 @@ type NationalityService struct {
 }
 
 type Response struct {
-	Data  interface{} `json:"data,omitempty"`
-	Error string      `json:"error,omitempty"`
+	Data  interface{} `json:"data"`
+	Error string      `json:"error"`
 }
 
 func (s *NationalityService) Create(w http.ResponseWriter, r *http.Request) {
-	w.Header().Add("Content-Type", "application/json")
-
-	res := Response{}
-	defer json.NewEncoder(w).Encode(res)
+	w.Header().Set("Content-Type", "application/json")
 
 	var newNationality entity.Nationality
+	response := Response{}
 
 	err := json.NewDecoder(r.Body).Decode(&newNationality)
 	if err != nil {
+		response.Error = err.Error()
 		w.WriteHeader(http.StatusBadRequest)
-		res.Error = err.Error()
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
 	if newNationality.Nationality_code == "" || newNationality.Nationality_name == "" {
+		response.Error = "Fill All Field"
 		w.WriteHeader(http.StatusBadRequest)
-		res.Error = "Fill All Field"
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
 	repo := repository.NationalityRepository{Database: s.Database}
 
-	// insert data to database
+	// Insert data into database
 	result, err := repo.Create(&newNationality)
 	if err != nil {
-		fmt.Println("Error: ", err)
-
-		w.WriteHeader(http.StatusBadRequest)
-		res.Error = err.Error()
+		response.Error = err.Error()
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(response)
 		return
 	}
 
-	res.Data = result
+	response.Data = result
 	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
 }
