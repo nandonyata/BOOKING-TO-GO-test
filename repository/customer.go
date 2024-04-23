@@ -40,10 +40,27 @@ func (r *CustomerRepository) Create(in *model.ReqBodyCreateCustomer) (interface{
 	return "Success", nil
 }
 
-func (r *CustomerRepository) FindAll() ([]entity.Customer, error) {
+func (r *CustomerRepository) FindAll() (interface{}, error) {
 	query := `
-		SELECT * FROM customer
-		ORDER BY id DESC
+		SELECT
+			c.id,
+			c.nationality_id,
+			c.cst_name,
+			c.cst_dob,
+			c.cst_phoneNum,
+			c.cst_email,
+			f.fl_relation,
+			f.fl_name,
+			f.fl_dob,
+			n.nationality_name
+		FROM
+			customer c
+		JOIN
+			family_list f ON c.id = f.cst_id
+		JOIN
+			nationality n ON c.nationality_id = n.id
+		ORDER BY
+			c.id DESC
 	`
 
 	rows, err := r.Database.Query(query)
@@ -51,18 +68,48 @@ func (r *CustomerRepository) FindAll() ([]entity.Customer, error) {
 		return nil, err
 	}
 
-	var data []entity.Customer
-	for rows.Next() {
-		cust := entity.Customer{}
+	var response []model.ResponseFetchCustomer
+	var currentCustId int
+	var currentCust model.ResponseFetchCustomer
 
-		if err = rows.Scan(&cust.Id, &cust.Nationality_id, &cust.Cst_name, &cust.Cst_dob, &cust.Cst_phoneNum, &cust.Cst_email); err != nil {
+	for rows.Next() {
+
+		var customer entity.Customer
+		var nationality string
+		var family_list model.FamilyList
+
+		err := rows.Scan(&customer.Id, &customer.Nationality_id, &customer.Cst_name, &customer.Cst_dob, &customer.Cst_phoneNum, &customer.Cst_email, &family_list.Relation, &family_list.Name, &family_list.Dob, &nationality)
+
+		if err != nil {
 			return nil, err
 		}
 
-		data = append(data, cust)
+		if customer.Id != currentCustId {
+			if currentCustId != 0 {
+				response = append(response, currentCust)
+			}
+
+			currentCustId = customer.Id
+			currentCust = model.ResponseFetchCustomer{
+				Nationality: nationality,
+				Name:        customer.Cst_name,
+				Dob:         customer.Cst_dob,
+				Phone:       customer.Cst_phoneNum,
+				Email:       customer.Cst_email,
+				Family_list: []model.FamilyList{family_list},
+			}
+		} else {
+			currentCust.Family_list = append(currentCust.Family_list, family_list)
+		}
+
 	}
 
-	return data, nil
+	if currentCustId != 0 {
+		response = append(response, currentCust)
+	}
+
+	return response, nil
+
 }
 
 func (r *CustomerRepository) FindOne(id int) (interface{}, error) {
