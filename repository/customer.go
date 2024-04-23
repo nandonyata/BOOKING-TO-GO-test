@@ -2,7 +2,6 @@ package repository
 
 import (
 	"database/sql"
-	"errors"
 
 	"github.com/nandonyata/BOOKING-TO-GO-test/entity"
 	"github.com/nandonyata/BOOKING-TO-GO-test/model"
@@ -115,20 +114,66 @@ func (r *CustomerRepository) FindAll() (interface{}, error) {
 
 func (r *CustomerRepository) FindOne(id int) (interface{}, error) {
 	query := `
-		SELECT * FROM customer
-		WHERE id = $1
+		SELECT
+			c.id,
+			c.nationality_id,
+			c.cst_name,
+			c.cst_dob,
+			c.cst_phoneNum,
+			c.cst_email,
+			f.fl_relation,
+			f.fl_name,
+			f.fl_dob,
+			n.nationality_name
+		FROM
+			customer c
+		JOIN
+			family_list f ON c.id = f.cst_id
+		JOIN
+			nationality n ON c.nationality_id = n.id
+		WHERE
+			c.id = $1
+		ORDER BY
+			c.id DESC
 	`
 
-	cust := entity.Customer{}
-
-	err := r.Database.QueryRow(query, id).Scan(&cust.Id, &cust.Nationality_id, &cust.Cst_name, &cust.Cst_dob, &cust.Cst_phoneNum, &cust.Cst_email)
+	rows, err := r.Database.Query(query, id)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, errors.New("data not found")
+		return nil, err
+	}
+
+	var response model.ResponseFetchCustomer
+	var currentCustId int
+
+	for rows.Next() {
+
+		var customer entity.Customer
+		var nationality string
+		var family_list model.FamilyList
+
+		err := rows.Scan(&customer.Id, &customer.Nationality_id, &customer.Cst_name, &customer.Cst_dob, &customer.Cst_phoneNum, &customer.Cst_email, &family_list.Relation, &family_list.Name, &family_list.Dob, &nationality)
+
+		if err != nil {
+			return nil, err
+		}
+
+		if currentCustId == 0 {
+			currentCustId = customer.Id
+			response = model.ResponseFetchCustomer{
+				Id:          customer.Id,
+				Nationality: nationality,
+				Name:        customer.Cst_name,
+				Dob:         customer.Cst_dob,
+				Phone:       customer.Cst_phoneNum,
+				Email:       customer.Cst_email,
+				Family_list: []model.FamilyList{family_list},
+			}
+		} else {
+			response.Family_list = append(response.Family_list, family_list)
 		}
 	}
 
-	return cust, nil
+	return response, nil
 
 }
 
