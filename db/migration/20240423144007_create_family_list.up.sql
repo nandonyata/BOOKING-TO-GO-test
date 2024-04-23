@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS family_list (
     fl_relation VARCHAR(50) NOT NULL,
     fl_name VARCHAR(50) NOT NULL,
     fl_dob VARCHAR(50) NOT NULL,
-    FOREIGN KEY(cst_id) REFERENCES customer(id)
+    FOREIGN KEY(cst_id) REFERENCES customer(id) ON DELETE CASCADE
 );
