@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/nandonyata/BOOKING-TO-GO-test/entity"
 	"github.com/nandonyata/BOOKING-TO-GO-test/repository"
 )
@@ -53,6 +54,47 @@ func (s *NationalityService) Create(w http.ResponseWriter, r *http.Request) {
 	response.Data = struct {
 		Message string `json:"message"`
 	}{Message: "Success"}
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
+}
+
+func (s *NationalityService) FindAll(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	response := Response{}
+
+	repo := repository.NationalityRepository{Database: s.Database}
+
+	result, err := repo.FindAll()
+	if err != nil {
+		response.Error = err.Error()
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	response.Data = result
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(response)
+}
+
+func (s *NationalityService) FindOne(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	paramCode := mux.Vars(r)
+	response := Response{}
+
+	repo := repository.NationalityRepository{Database: s.Database}
+
+	result, err := repo.FindOne(paramCode["code"])
+	if err != nil {
+		response.Error = err.Error()
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+
+	response.Data = result
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(response)
 }

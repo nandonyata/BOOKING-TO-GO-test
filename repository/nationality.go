@@ -25,9 +25,9 @@ func (r *NationalityRepository) Create(in *entity.Nationality) (interface{}, err
 	return result, nil
 }
 
-func (r *NationalityRepository) FindAll() (interface{}, error) {
+func (r *NationalityRepository) FindAll() ([]entity.Nationality, error) {
 	query := `
-		SELECT nationality_name, nationality_code FROM nationality
+		SELECT id, nationality_name, nationality_code FROM nationality
 		ORDER BY nationality_name ASC
 	`
 
@@ -41,7 +41,7 @@ func (r *NationalityRepository) FindAll() (interface{}, error) {
 	for rows.Next() {
 		nationality := entity.Nationality{}
 
-		if err = rows.Scan(&nationality.Nationality_name, &nationality.Nationality_code); err != nil {
+		if err = rows.Scan(&nationality.Id, &nationality.Nationality_name, &nationality.Nationality_code); err != nil {
 			return nil, err
 		}
 
@@ -51,15 +51,15 @@ func (r *NationalityRepository) FindAll() (interface{}, error) {
 	return data, nil
 }
 
-func (r *NationalityRepository) FindById(in int) (interface{}, error) {
+func (r *NationalityRepository) FindOne(code string) (interface{}, error) {
 	query := `
-		SELECT nationality_name, nationality_code FROM nationality
-		WHERE id = $1
+		SELECT id, nationality_name, nationality_code FROM nationality
+		WHERE nationality_code = $1
 	`
 
 	data := entity.Nationality{}
 
-	err := r.Database.QueryRow(query, in).Scan(&data.Nationality_name, &data.Nationality_code)
+	err := r.Database.QueryRow(query, code).Scan(&data.Id, &data.Nationality_name, &data.Nationality_code)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, errors.New("data not found")

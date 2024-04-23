@@ -22,6 +22,8 @@ func main() {
 		w.Write([]byte("Hello World"))
 	})
 	r.HandleFunc("/nationality", nationalityService.Create).Methods(http.MethodPost)
+	r.HandleFunc("/nationality", nationalityService.FindAll).Methods(http.MethodGet)
+	r.HandleFunc("/nationality/{code}", nationalityService.FindOne).Methods(http.MethodGet)
 
 	log.Printf("Listening on port %v\n", PORT)
 	err := http.ListenAndServe(PORT, r)
